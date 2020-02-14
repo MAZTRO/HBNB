@@ -7,21 +7,35 @@ import datetime
 class BaseModel():
     """BaseModel"""
 
-    def __init__(self, id=None, name=None, my_number=None):
-        self.id = str(uuid.uuid4())
-        self.name = name
-        self.my_number = my_number
-        self.created_at = str(datetime.datetime.now().isoformat('T'))
-        self.update_at = str(datetime.datetime.now().isoformat('T'))
+    def __init__(self, *args, **kwargs):
+        if len(kwargs) != 0:
+            for k, v in kwargs.items():
+                if k != "__class__":
+                    if k == "created_at":
+                        v = datetime.datetime.strptime(v, "\
+%Y-%m-%dT%H:%M:%S.%f")
+                    if k == "updated_at":
+                        v = datetime.datetime.strptime(v, "\
+%Y-%m-%dT%H:%M:%S.%f")
+                    setattr(self, k, v)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
 
     def save(self):
-        self.update_at = str(datetime.datetime.now().isoformat('T'))
+        """Save"""
+        self.updated_at = datetime.datetime.now()
 
     def to_dict(self):
+        """Convert to dict"""
         dic = self.__dict__
         dic['__class__'] = self.__class__.__name__
+        dic['created_at'] = self.created_at.isoformat('T')
+        dic['updated_at'] = self.updated_at.isoformat('T')
         return dic
 
     def __str__(self):
-        return ('[{}] ({}) {}'.format(self.__class__.__name__, /
-                self.id, self.__dict__))
+        """representation of str"""
+        return ('[{}] ({}) \
+{}'.format(self.__class__.__name__, self.id, self.__dict__))
