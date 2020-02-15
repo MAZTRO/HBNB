@@ -32,7 +32,7 @@ class BaseModel():
 
     def to_dict(self):
         """Convert to dict"""
-        dic = self.__dict__
+        dic = self.__dict__.copy()
         dic['__class__'] = self.__class__.__name__
         dic['created_at'] = self.created_at.isoformat('T')
         dic['updated_at'] = self.updated_at.isoformat('T')
