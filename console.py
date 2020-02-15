@@ -9,10 +9,31 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb_console)_$ '
     doc_header = "Commands that can help you:\ntype \
 \"help <command>\" to know more:"
+    undoc_header = "HBNB Comands:"
     ruler = '='
     file = None
 
+    """ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ """
+    # Commands to HBNB:
+    def do_create(self, arg):
+        print("Basemodel Crated")
+
+    def do_show(self, arg):
+        print("Show basemodel")
+
+    def do_destroy(self, arg):
+        print("BaseModel was destroy it")
+
+    def do_all(self, arg):
+        print("ALL")
+
+    def do_update(self, arg):
+        print("All Updated")
+
+    """ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ """
+
     # Basic commands
+    last_output = ''
     def do_shell(self, line):
         """ Run a shell command """
         # print("running shell command:", line)
@@ -37,6 +58,7 @@ class HBNBCommand(cmd.Cmd):
 
     do_q = do_quit
 
+    """ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ """
     # Docummented comands
     def help_quit(self):
         print("Quit command to exit the program\n")
