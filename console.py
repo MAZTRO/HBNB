@@ -2,6 +2,7 @@
 import cmd
 import sys
 import subprocess
+from models.base_model import BaseModel
 
 
 class HBNBCommand(cmd.Cmd):
@@ -16,10 +17,19 @@ class HBNBCommand(cmd.Cmd):
     """ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ """
     # Commands to HBNB:
     def do_create(self, arg):
-        print("Basemodel Crated")
+        if len(arg) == 0:
+            print("** class name missing **")
+        elif arg == "BaseModel":
+            new_instance = BaseModel()
+            new_instance.save()
+            print(new_instance.id)
+        else:
+            print("** class doesn't exist **")
 
     def do_show(self, arg):
-        print("Show basemodel")
+        lis = arg.split(' ')
+        obj_ID = lis[1]
+        print("")
 
     def do_destroy(self, arg):
         print("BaseModel was destroy it")
