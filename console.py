@@ -86,7 +86,17 @@ class HBNBCommand(cmd.Cmd):
                         f.write(json.dumps(data))
     
     def do_all(self, arg):
-        print("ALL")
+        """Print all instances"""
+        if len(arg) == 0 or arg == "BaseModel":
+            with open("file.json", "r") as f:
+                data = json.loads(f.read())
+            l = []
+            for v in data.values():
+                obj = BaseModel(**v)
+                l.append(str(obj))
+            print(l)
+        else:
+            print("** class doesn't exist **")
 
     def do_update(self, arg):
         print("All Updated")
