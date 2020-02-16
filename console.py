@@ -44,16 +44,41 @@ class HBNBCommand(cmd.Cmd):
 
                 with open("file.json", "r") as f:
                     data = json.loads(f.read())
+                    flag = 0
                     for k, v in data.items():
                         token = k.split('.')
                         if lis[1] == token[1]:
                             obj = BaseModel(**v)
                             print(obj)
-                        else:
-                            print("** no instance found **")
+                            flag = 1
+                if flag != 1:
+                    print("** no instance found **")
     
     def do_destroy(self, arg):
-        print("BaseModel was destroy it")
+        """ if len(arg) == 0:
+            print("** class name missing **")
+        
+        else:
+            lis = arg.split(' ')
+            if len(lis) == 1:
+                if lis[0] != "BaseModel":
+                    print("** class doesn't exist **")
+                else:
+                    print("** instance id missing **")
+            else:
+                if lis[0] != "BaseModel":
+                    print("** class doesn't exist **")
+                
+                with open("file.json", "r") as f:
+                    data = json.loads(f.read())
+                    for k, v in data.items():
+                        token = k.split('.')
+                        if lis[1] == token[1]:
+                            obj = BaseModel(**v)
+                            del(k)
+                        else:
+                            print("** no instance found **") """
+                            
 
     def do_all(self, arg):
         print("ALL")
