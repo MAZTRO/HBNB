@@ -18,6 +18,7 @@ class HBNBCommand(cmd.Cmd):
     """ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ """
     # Commands to HBNB:
     def do_create(self, arg):
+        """Create Instances"""
         if len(arg) == 0:
             print("** class name missing **")
         elif arg == "BaseModel":
@@ -28,6 +29,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_show(self, arg):
+        """Show Instances"""
         if len(arg) == 0:
             print("** class name missing **")
         
@@ -41,21 +43,22 @@ class HBNBCommand(cmd.Cmd):
             else:
                 if lis[0] != "BaseModel":
                     print("** class doesn't exist **")
-
-                with open("file.json", "r") as f:
-                    data = json.loads(f.read())
-                    flag = 0
-                    for k, v in data.items():
-                        token = k.split('.')
-                        if lis[1] == token[1]:
-                            obj = BaseModel(**v)
-                            print(obj)
-                            flag = 1
-                if flag != 1:
-                    print("** no instance found **")
+                else:
+                    with open("file.json", "r") as f:
+                        data = json.loads(f.read())
+                        flag = 0
+                        for k, v in data.items():
+                            token = k.split('.')
+                            if lis[1] == token[1]:
+                                obj = BaseModel(**v)
+                                print(obj)
+                                flag = 1
+                    if flag != 1:
+                        print("** no instance found **")
     
     def do_destroy(self, arg):
-        """ if len(arg) == 0:
+        """Destroy instances"""
+        if len(arg) == 0:
             print("** class name missing **")
         
         else:
@@ -68,18 +71,20 @@ class HBNBCommand(cmd.Cmd):
             else:
                 if lis[0] != "BaseModel":
                     print("** class doesn't exist **")
-                
-                with open("file.json", "r") as f:
-                    data = json.loads(f.read())
-                    for k, v in data.items():
+                else:
+                    with open("file.json", "r") as f:
+                        data = json.loads(f.read())
+                    flag = 0
+                    for k, v in data.copy().items():
                         token = k.split('.')
                         if lis[1] == token[1]:
-                            obj = BaseModel(**v)
-                            del(k)
-                        else:
-                            print("** no instance found **") """
-                            
-
+                            flag = 1
+                            del data[k]
+                    if flag != 1:
+                        print("** no instance found **")
+                    with open("file.json", "w") as f:
+                        f.write(json.dumps(data))
+    
     def do_all(self, arg):
         print("ALL")
 
