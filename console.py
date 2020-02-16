@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import cmd
 import sys
+import json
 import subprocess
 from models.base_model import BaseModel
 
@@ -27,10 +28,30 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_show(self, arg):
-        lis = arg.split(' ')
-        obj_ID = lis[1]
-        print("")
+        if len(arg) == 0:
+            print("** class name missing **")
+        
+        else:
+            lis = arg.split(' ')
+            if len(lis) == 1:
+                if lis[0] != "BaseModel":
+                    print("** class doesn't exist **")
+                else:
+                    print("** instance id missing **")
+            else:
+                if lis[0] != "BaseModel":
+                    print("** class doesn't exist **")
 
+                with open("file.json", "r") as f:
+                    data = json.loads(f.read())
+                    for k, v in data.items():
+                        token = k.split('.')
+                        if lis[1] == token[1]:
+                            obj = BaseModel(**v)
+                            print(obj)
+                        else:
+                            print("** no instance found **")
+    
     def do_destroy(self, arg):
         print("BaseModel was destroy it")
 
