@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
                 if not data.get(concat):
                     print("** no instance found **")
                 else:
-                     print("** attribute name missing **")
+                    print("** attribute name missing **")
 
             elif len(lis) == 3:
                 print("** value missing **")
