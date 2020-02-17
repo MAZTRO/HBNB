@@ -32,7 +32,7 @@ class HBNBCommand(cmd.Cmd):
         """Show Instances"""
         if len(arg) == 0:
             print("** class name missing **")
-        
+
         else:
             lis = arg.split(' ')
             if len(lis) == 1:
@@ -55,12 +55,12 @@ class HBNBCommand(cmd.Cmd):
                                 flag = 1
                     if flag != 1:
                         print("** no instance found **")
-    
+
     def do_destroy(self, arg):
         """Destroy instances"""
         if len(arg) == 0:
             print("** class name missing **")
-        
+
         else:
             lis = arg.split(' ')
             if len(lis) == 1:
@@ -84,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
                         print("** no instance found **")
                     with open("file.json", "w") as f:
                         f.write(json.dumps(data))
-    
+
     def do_all(self, arg):
         """Print all instances"""
         if len(arg) == 0 or arg == "BaseModel":
@@ -105,6 +105,7 @@ class HBNBCommand(cmd.Cmd):
 
     # Basic commands
     last_output = ''
+
     def do_shell(self, line):
         """ Run a shell command """
         # print("running shell command:", line)
