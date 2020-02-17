@@ -84,6 +84,7 @@ class HBNBCommand(cmd.Cmd):
                         print("** no instance found **")
                     with open("file.json", "w") as f:
                         f.write(json.dumps(data))
+                    f.close()
 
     def do_all(self, arg):
         """Print all instances"""
@@ -128,6 +129,9 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, arg):
         sys.exit(1)
 
+    def emptyline(self):
+        pass
+
     do_q = do_quit
 
     """ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ """
@@ -143,6 +147,9 @@ class HBNBCommand(cmd.Cmd):
 
     def help_Hello(self):
         print("Print a welcome message\n")
+
+    def help_emptyline(self):
+        print("Do nothing\n")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
