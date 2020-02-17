@@ -5,6 +5,11 @@ import json
 import subprocess
 import models
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models.base_model import BaseModel
 
 classes = ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
@@ -112,9 +117,9 @@ class HBNBCommand(cmd.Cmd):
         data = models.storage.all()
         if len(arg) == 0:
             print("** class name missing **")
-
         else:
-            lis = arg.split(' ')
+            lis_copy = arg
+            lis = lis_copy.split(' ')
             if len(lis) == 1:
                 if lis[0] not in classes:
                     print("** class doesn't exist **")
@@ -129,11 +134,13 @@ class HBNBCommand(cmd.Cmd):
 
             elif len(lis) == 3:
                 print("** value missing **")
-            elif len(lis) == 4:
+            else:
+                com = arg.split('"')
                 concat = lis[0] + "." + lis[1]
                 if data.get(concat):
+                    lis[3] = com[1]
                     obj = data[concat]
-                    setattr(obj, lis[2], lis[3].strip('"'))
+                    setattr(obj, lis[2], lis[3])
                     models.storage.save()
                 else:
                     print("** no instance found **")
