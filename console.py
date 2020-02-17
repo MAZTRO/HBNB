@@ -3,7 +3,10 @@ import cmd
 import sys
 import json
 import subprocess
+import models
 from models.base_model import BaseModel
+
+classes = ["BaseModel", "State", "City", "Amenity", "Place", "Review"]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -21,8 +24,8 @@ class HBNBCommand(cmd.Cmd):
         """Create Instances"""
         if len(arg) == 0:
             print("** class name missing **")
-        elif arg == "BaseModel":
-            new_instance = BaseModel()
+        elif arg in classes:
+            new_instance = eval(arg + "()")
             new_instance.save()
             print(new_instance.id)
         else:
@@ -36,25 +39,23 @@ class HBNBCommand(cmd.Cmd):
         else:
             lis = arg.split(' ')
             if len(lis) == 1:
-                if lis[0] != "BaseModel":
+                if lis[0] not in classes:
                     print("** class doesn't exist **")
                 else:
                     print("** instance id missing **")
             else:
-                if lis[0] != "BaseModel":
+                if lis[0] not in classes:
                     print("** class doesn't exist **")
                 else:
-                    with open("file.json", "r") as f:
-                        data = json.loads(f.read())
-                        flag = 0
-                        for k, v in data.items():
-                            token = k.split('.')
-                            if lis[1] == token[1]:
-                                obj = BaseModel(**v)
-                                print(obj)
-                                flag = 1
-                    if flag != 1:
-                        print("** no instance found **")
+                    data = models.storage.all()
+                    flag = 0
+                    for k, v in data.items():
+                        token = k.split('.')
+                        if lis[1] == token[1]:
+                            print(v)
+                            flag = 1
+                if flag != 1:
+                    print("** no instance found **")
 
     def do_destroy(self, arg):
         """Destroy instances"""
@@ -64,42 +65,49 @@ class HBNBCommand(cmd.Cmd):
         else:
             lis = arg.split(' ')
             if len(lis) == 1:
-                if lis[0] != "BaseModel":
+                if lis[0] not in classes:
                     print("** class doesn't exist **")
                 else:
                     print("** instance id missing **")
             else:
-                if lis[0] != "BaseModel":
+                if lis[0] not in classes:
                     print("** class doesn't exist **")
                 else:
-                    with open("file.json", "r") as f:
-                        data = json.loads(f.read())
+                    data = models.storage.all()
                     flag = 0
                     for k, v in data.copy().items():
                         token = k.split('.')
                         if lis[1] == token[1]:
                             flag = 1
+                            data[k] = v.to_dict()
                             del data[k]
                     if flag != 1:
                         print("** no instance found **")
-                    with open("file.json", "w") as f:
-                        f.write(json.dumps(data))
-                    f.close()
+                    models.storage.save()
 
     def do_all(self, arg):
         """Print all instances"""
-        if len(arg) == 0 or arg == "BaseModel":
+        if len(arg) == 0:
+            data = models.storage.all()
+            l = []
+            for v in data.values():
+                l.append(str(v))
+            print(l)
+        elif arg in classes:
             with open("file.json", "r") as f:
                 data = json.loads(f.read())
             l = []
-            for v in data.values():
-                obj = BaseModel(**v)
-                l.append(str(obj))
+            for k, v in data.items():
+                token = k.split('.')
+                if arg == token[0]:
+                    obj = eval(arg + "(**v)")
+                    l.append(str(obj))
             print(l)
         else:
             print("** class doesn't exist **")
 
     def do_update(self, arg):
+        
         print("All Updated")
 
     """ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ """
