@@ -4,9 +4,10 @@ import sys
 import json
 import subprocess
 import models
+from models.user import User
 from models.base_model import BaseModel
 
-classes = ["BaseModel", "State", "City", "Amenity", "Place", "Review"]
+classes = ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
 
 
 class HBNBCommand(cmd.Cmd):

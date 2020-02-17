@@ -30,6 +30,7 @@ class FileStorage():
 			with open(FileStorage.__file_path, 'r') as f:
 				data = json.loads(f.read())
 				for k, v in data.items():
+					token = k.split('.')
 					obj = BaseModel(**v)
 					self.__objects[k] = obj
 		except:
