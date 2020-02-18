@@ -18,7 +18,7 @@ classes = ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
 
 class HBNBCommand(cmd.Cmd):
     intro = 'Welcome to HBNB console.   Type "help" or "?" to list commands.\n'
-    prompt = '(hbnb_console)_$ '
+    prompt = '(hbnb) '
     doc_header = "Commands that can help you:\ntype \
 \"help <command>\" to know more:"
     undoc_header = "HBNB Comands:"
@@ -140,10 +140,23 @@ class HBNBCommand(cmd.Cmd):
             elif len(lis) == 3:
                 print("** value missing **")
             else:
-                com = arg.split('"')
+                if lis[3][0] == '"':
+                    com = arg.split('"')
+                    lis[3] = com[1]
+                else:
+                    try:
+                        lis[3] = int(lis[3])
+                        if (lis[3].is_integer()):
+                            pass
+                        else:
+                            try:
+                                lis[3] = float(lis[3])
+                            except:
+                                pass
+                    except:
+                        pass
                 concat = lis[0] + "." + lis[1]
                 if data.get(concat):
-                    lis[3] = com[1]
                     obj = data[concat]
                     setattr(obj, lis[2], lis[3])
                     storage.save()
