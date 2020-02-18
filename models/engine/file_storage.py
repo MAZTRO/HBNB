@@ -2,6 +2,12 @@
 import json
 from models.base_model import BaseModel
 import models
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 """ Class FileStorage """
 
 
@@ -27,11 +33,11 @@ class FileStorage():
 
 	def reload(self):
 		try:
-			with open(FileStorage.__file_path, 'r') as f:
+			with open(self.__file_path, 'r') as f:
 				data = json.loads(f.read())
 				for k, v in data.items():
-					token = k.split('.')
-					obj = BaseModel(**v)
+					name = k.split('.')
+					obj = eval(name[0] + "(**v)")
 					self.__objects[k] = obj
 		except:
 			pass

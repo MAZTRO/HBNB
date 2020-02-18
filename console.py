@@ -4,6 +4,7 @@ import sys
 import json
 import subprocess
 import models
+from models import storage
 from models.user import User
 from models.state import State
 from models.city import City
@@ -53,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
                 if lis[0] not in classes:
                     print("** class doesn't exist **")
                 else:
-                    data = models.storage.all()
+                    data = storage.all()
                     flag = 0
                     for k, v in data.items():
                         token = k.split('.')
@@ -79,7 +80,7 @@ class HBNBCommand(cmd.Cmd):
                 if lis[0] not in classes:
                     print("** class doesn't exist **")
                 else:
-                    data = models.storage.all()
+                    data = storage.all()
                     flag = 0
                     for k, v in data.copy().items():
                         token = k.split('.')
@@ -89,32 +90,36 @@ class HBNBCommand(cmd.Cmd):
                             del data[k]
                     if flag != 1:
                         print("** no instance found **")
-                    models.storage.save()
+                    storage.save()
 
     def do_all(self, arg):
         """Print all instances"""
-        if len(arg) == 0:
-            data = models.storage.all()
+        args = arg.split()
+        if len(args) == 0:
+            data = storage.all()
             l = []
             for v in data.values():
                 l.append(str(v))
             print(l)
-        elif arg in classes:
-            with open("file.json", "r") as f:
-                data = json.loads(f.read())
-            l = []
-            for k, v in data.items():
-                token = k.split('.')
-                if arg == token[0]:
-                    obj = eval(arg + "(**v)")
-                    l.append(str(obj))
-            print(l)
+        elif args[0] in classes:
+            try:
+                with open("file.json", "r") as f:
+                    data = json.loads(f.read())
+                l = []
+                for k, v in data.items():
+                    token = k.split('.')
+                    if arg == token[0]:
+                        obj = eval(arg + "(**v)")
+                        l.append(str(obj))
+                print(l)
+            except:
+                pass
         else:
             print("** class doesn't exist **")
 
     def do_update(self, arg):
         """Update instances"""
-        data = models.storage.all()
+        data = storage.all()
         if len(arg) == 0:
             print("** class name missing **")
         else:
@@ -141,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
                     lis[3] = com[1]
                     obj = data[concat]
                     setattr(obj, lis[2], lis[3])
-                    models.storage.save()
+                    storage.save()
                 else:
                     print("** no instance found **")
 
@@ -166,7 +171,6 @@ class HBNBCommand(cmd.Cmd):
         self.prompt = line + ': '
 
     def do_EOF(self, arg):
-        print("^D")
         return True
 
     def do_quit(self, arg):
